@@ -9,12 +9,12 @@ public interface UserService {
 
     BankResponse balanceEnquiry(EnquiryRequest enquiryRequest);
 
-      String nameEnquiry(EnquiryRequest enquiryRequest);
+    String nameEnquiry(EnquiryRequest enquiryRequest);
 
-      BankResponse creditAccount(CreditDebitRequest creditDebitRequest);
+    BankResponse creditAccount(CreditDebitRequest creditDebitRequest);
 
-      BankResponse debitAccount(CreditDebitRequest creditDebitRequest);
+    BankResponse debitAccount(CreditDebitRequest creditDebitRequest);
 
-      BankResponse transfer(TransferRequest transferRequest);
+    BankResponse transfer(TransferRequest transferRequest);
 
 }

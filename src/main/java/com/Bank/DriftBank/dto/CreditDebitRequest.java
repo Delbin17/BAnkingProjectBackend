@@ -13,6 +13,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class CreditDebitRequest {
-    private  String accountNumber;
+    private String accountNumber;
     private BigDecimal amount;
 }

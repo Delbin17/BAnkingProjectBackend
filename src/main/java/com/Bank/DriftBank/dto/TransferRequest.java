@@ -13,6 +13,6 @@ import java.math.BigDecimal;
 @Builder
 public class TransferRequest {
     private String sourceAccount;
-    private  String destinationAccount;
+    private String destinationAccount;
     private BigDecimal amount;
 }

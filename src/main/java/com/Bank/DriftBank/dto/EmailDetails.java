@@ -9,8 +9,8 @@ import lombok.*;
 @Builder
 public class EmailDetails {
 
-    private  String recipient;
-    private  String messageBody;
+    private String recipient;
+    private String messageBody;
     private String subject;
     private String attachment;
 

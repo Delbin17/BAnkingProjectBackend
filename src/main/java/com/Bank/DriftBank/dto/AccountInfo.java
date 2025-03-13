@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -14,10 +15,7 @@ import java.math.BigDecimal;
 public class AccountInfo {
     private String accountNAme;
     private BigDecimal accountBalance;
-    private  String accountNumber;
-
-
-
+    private String accountNumber;
 
 
 }

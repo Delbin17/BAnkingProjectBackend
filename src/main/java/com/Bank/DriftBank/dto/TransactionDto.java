@@ -12,8 +12,8 @@ import java.math.BigDecimal;
 @Builder
 @Data
 public class TransactionDto {
-    private  String transactionType;
+    private String transactionType;
     private BigDecimal amount;
-    private  String accountNumber;
-    private  String status;
+    private String accountNumber;
+    private String status;
 }

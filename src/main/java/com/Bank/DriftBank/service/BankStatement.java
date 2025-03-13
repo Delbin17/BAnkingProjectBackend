@@ -30,14 +30,14 @@ public class BankStatement {
     private UserRepository userRepository;
     private EmailService emailService;
 
-    //private static final String FILE="Desktop\\statement.pdf";
     private static final String FILE = System.getProperty("user.home") + "/Desktop/Statement.pdf";
-    public List<Transactions> generateStatement(String accountNumber,String startDate,String endDate) throws FileNotFoundException, DocumentException {
+
+    public List<Transactions> generateStatement(String accountNumber, String startDate, String endDate) throws FileNotFoundException, DocumentException {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
 
-        LocalDate start=LocalDate.parse(startDate,formatter);
-        LocalDate end=LocalDate.parse(endDate,formatter);
-        List<Transactions> TranscationList= transactionRepo.findAll().stream()
+        LocalDate start = LocalDate.parse(startDate, formatter);
+        LocalDate end = LocalDate.parse(endDate, formatter);
+        List<Transactions> TranscationList = transactionRepo.findAll().stream()
                 .filter(transactions -> transactions.getAccountNumber().equals(accountNumber))
                 .filter(transactions -> transactions.getCreatedAt() != null)
                 .filter(transactions ->
@@ -45,61 +45,64 @@ public class BankStatement {
                 )
                 .collect(Collectors.toList());
 
-        Users user=userRepository.findByAccountNumber(accountNumber);
-        String customerName=user.getFirstName()+user.getLastName()+user.getOtherName();
+        Users user = userRepository.findByAccountNumber(accountNumber);
+        if (user == null) {
+            throw new RuntimeException("No user found with account number: " + accountNumber);
+        }
+        String customerName = user.getFirstName() + user.getLastName() + user.getOtherName();
 
-        Rectangle statementSize=new Rectangle(PageSize.A4);
-        Document document =new Document(statementSize);
-        //log.info("Setting size of document");
-        log.info("Saving PDF to: " + FILE);
-        OutputStream outputStream=new FileOutputStream(FILE);
-        PdfWriter.getInstance(document,outputStream);
+
+        Rectangle statementSize = new Rectangle(PageSize.A4);
+        Document document = new Document(statementSize);
+        log.info("Saving PDF to: {}", FILE);
+        OutputStream outputStream = new FileOutputStream(FILE);
+        PdfWriter.getInstance(document, outputStream);
         document.open();
 
-        PdfPTable bankInfoTable=new PdfPTable(1);
-        PdfPCell bankName=new PdfPCell(new Phrase("The Drift Bank"));
+        PdfPTable bankInfoTable = new PdfPTable(1);
+        PdfPCell bankName = new PdfPCell(new Phrase("The Drift Bank"));
         bankName.setBorder(0);
         bankName.setBackgroundColor(BaseColor.BLUE);
         bankName.setPadding(20f);
 
-        PdfPCell bankAddress=new PdfPCell(new Phrase("65-A ,Fathimanager P O,KaniyaKumari TamilNadu"));
+        PdfPCell bankAddress = new PdfPCell(new Phrase("65-A ,Fathimanager P O,KaniyaKumari TamilNadu"));
         bankAddress.setBorder(0);
         bankInfoTable.addCell(bankName);
         bankInfoTable.addCell(bankAddress);
 
-        PdfPTable statementInfo=new PdfPTable(2);
-        PdfPCell customerInfo=new PdfPCell(new Phrase("Start date:"+startDate));
+        PdfPTable statementInfo = new PdfPTable(2);
+        PdfPCell customerInfo = new PdfPCell(new Phrase("Start date:" + startDate));
         customerInfo.setBorder(0);
 
-        PdfPCell statment=new PdfPCell(new Phrase("STATEMENT OF ACCOUNT"));
+        PdfPCell statment = new PdfPCell(new Phrase("STATEMENT OF ACCOUNT"));
         statment.setBorder(0);
-        PdfPCell stopDate=new PdfPCell(new Phrase("End Date"+endDate));
+        PdfPCell stopDate = new PdfPCell(new Phrase("End Date" + endDate));
         stopDate.setBorder(0);
 
 
-        PdfPCell name=new PdfPCell(new Phrase("Customer name :"+customerName));
+        PdfPCell name = new PdfPCell(new Phrase("Customer name :" + customerName));
         name.setBorder(0);
 
-        PdfPCell space=new PdfPCell();
+        PdfPCell space = new PdfPCell();
         space.setBorder(0);
 
-        PdfPCell address=new PdfPCell(new Phrase("Customer Address:"+user.getAddress()));
+        PdfPCell address = new PdfPCell(new Phrase("Customer Address:" + user.getAddress()));
         address.setBorder(0);
 
-        PdfPTable transactionTable=new PdfPTable(4);
-        PdfPCell date=new PdfPCell(new Phrase("Date"));
+        PdfPTable transactionTable = new PdfPTable(4);
+        PdfPCell date = new PdfPCell(new Phrase("Date"));
         date.setBackgroundColor(BaseColor.BLUE);
         date.setBorder(0);
 
-        PdfPCell transactionType=new PdfPCell(new Phrase("TransactionType"));
+        PdfPCell transactionType = new PdfPCell(new Phrase("TransactionType"));
         transactionType.setBackgroundColor(BaseColor.BLUE);
         transactionType.setBorder(0);
 
-        PdfPCell transactionAmount=new PdfPCell(new Phrase("TransactionAmount"));
+        PdfPCell transactionAmount = new PdfPCell(new Phrase("TransactionAmount"));
         transactionAmount.setBackgroundColor(BaseColor.BLUE);
         transactionAmount.setBorder(0);
 
-        PdfPCell status=new PdfPCell(new Phrase("STATUS"));
+        PdfPCell status = new PdfPCell(new Phrase("STATUS"));
         status.setBackgroundColor(BaseColor.BLUE);
         status.setBorder(0);
 
@@ -129,7 +132,7 @@ public class BankStatement {
 
         document.close();
 
-        EmailDetails emailDetails=EmailDetails.builder()
+        EmailDetails emailDetails = EmailDetails.builder()
                 .recipient(user.getEmail())
                 .subject("STATEMENT OF BANK ACCOUNT")
                 .messageBody("Kindly find your requested Bank statement attached")
@@ -137,7 +140,7 @@ public class BankStatement {
                 .build();
 
 
-
+        emailService.sendEmailWithAttachment(emailDetails);
 
 
         return TranscationList;

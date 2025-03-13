@@ -10,32 +10,32 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @OpenAPIDefinition(
-		info = @Info(
-				title = "The Drift Banking Application",
-				description = "The Backend Api for Drift Bank application",
-				version = "v1.0",
-				contact = @Contact(
-						name = "Delbin",
-						email = "delbindeyohan@gmail.com",
-						url = "https://github.com/Delbin17/DriftBank.git"
-				),
-				license = @License(
-						name = "DriftBanking",
-						url = "https://github.com/Delbin17/DriftBank.git"
-				)
+        info = @Info(
+                title = "The Drift Banking Application",
+                description = "The Backend Api for Drift Bank application",
+                version = "v1.0",
+                contact = @Contact(
+                        name = "Delbin",
+                        email = "delbindeyohan@gmail.com",
+                        url = "https://github.com/Delbin17/DriftBank.git"
+                ),
+                license = @License(
+                        name = "DriftBanking",
+                        url = "https://github.com/Delbin17/DriftBank.git"
+                )
 
-		),
-		externalDocs = @ExternalDocumentation
-				(
-						description = "The Backend for Drift Banking",
-						url = "https://github.com/Delbin17/DriftBank.git"
-				)
+        ),
+        externalDocs = @ExternalDocumentation
+                (
+                        description = "The Backend for Drift Banking",
+                        url = "https://github.com/Delbin17/DriftBank.git"
+                )
 
 )
 public class DriftBankApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(DriftBankApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(DriftBankApplication.class, args);
+    }
 
 }

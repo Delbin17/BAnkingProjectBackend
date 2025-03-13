@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TransactionImpl implements  TransactionService{
+public class TransactionImpl implements TransactionService {
     @Autowired
     TransactionRepo transactionRepo;
 
     @Override
     public void saveTransaction(TransactionDto transactionDto) {
-        Transactions transactions=Transactions.builder()
+        Transactions transactions = Transactions.builder()
                 .transactionType(transactionDto.getTransactionType())
                 .accountNumber(transactionDto.getAccountNumber())
                 .amount(transactionDto.getAmount())

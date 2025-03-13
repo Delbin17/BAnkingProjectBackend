@@ -27,6 +27,6 @@ public class TransactionController {
     public List<Transactions> generateStatement(@RequestParam String accountNumber, @RequestParam String start, @RequestParam String end) throws DocumentException, FileNotFoundException {
 
 
-        return bankStatement.generateStatement(accountNumber,start,end);
+        return bankStatement.generateStatement(accountNumber, start, end);
     }
 }
